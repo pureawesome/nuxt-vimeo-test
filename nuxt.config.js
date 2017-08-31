@@ -21,6 +21,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    vendor: ['axios'],
     /*
     ** Run ESLINT on save
     */
@@ -36,3 +37,18 @@ module.exports = {
     }
   }
 }
+
+// const axios = require('axios')
+//
+// module.exports = {
+//   generate: {
+//     routes: function () {
+//       return axios.get('https://my-api/users')
+//       .then((res) => {
+//         return res.data.map((user) => {
+//           return '/users/' + user.id
+//         })
+//       })
+//     }
+//   }
+// }

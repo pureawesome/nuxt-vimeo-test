@@ -8,7 +8,6 @@
       <h2 class="subtitle">
         Nuxt.js project
       </h2>
-
       <div class="links">
         <a v-for="menu_item in menu">
           <nuxt-link :to="menu_item.canonical" class="button">{{menu_item.name}}</nuxt-link>
@@ -37,14 +36,15 @@ export default {
     Logo
   },
 
-  async asyncData () {
+  async asyncData ({ params }) {
     // let { menu } = await axios.get(`http://localhost:3000/types.json`)
     // let { videos } = await axios.get(`http://localhost:3000/video_list.json`)
     // return { menu: menu, videos: videos }
     // let { data } = await axios.get(`http://localhost:3000/cage.json`)
     let { data } = await axios.get(`http://localhost:3000/yola.json`)
     let tags = data.data.map((video) => video.clip.tags).reduce((a, b) => a.concat(b)).reduce((x, y) => x.findIndex(e => e.canonical === y.canonical) < 0 ? [...x, y] : x, []).sort((a, b) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1)
-    let videos = data.data.map((video) => video.clip)
+    let videos = data.data.map((video) => video.clip).filter((video) => video.tags.filter(tag => (tag.canonical === params.type)).length ? 1 : 0)
+
     // let tags = 'test'
     // console.log(tags)
 
