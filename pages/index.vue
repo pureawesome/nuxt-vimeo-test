@@ -27,29 +27,29 @@
 <script>
 import Logo from '~/components/Logo.vue'
 import Navigation from '~/components/Navigation.vue'
-import axios from 'axios'
+// import axios from 'axios'
+import { mapState } from 'vuex'
 
 export default {
   components: {
     Logo,
     Navigation
   },
+  computed: mapState([
+    'videos',
+    'tags'
+  ]),
+  // mounted: function () {
+  //   this.$store.dispatch('LOAD_DATA')
+  // },
   transition (to, from) {
     if ((from && from.name === 'videos-video') || (to && to.name === 'videos-video')) return 'video'
   },
   async asyncData () {
-    // let test = axios.get('http://localhost:3000/yola.json')
-    //   .then((res) => {
-    //     return res.data.data.map((video) => {
-    //       return video.clip.uri
-    //     })
-    //   })
-    // console.log(test)
-
-    let { data } = await axios.get(`http://localhost:3000/yola.json`)
-    let videos = data.data.map((video) => video.clip)
-    let tags = data.data.map((video) => video.clip.tags).reduce((a, b) => a.concat(b)).reduce((x, y) => x.findIndex(e => e.canonical === y.canonical) < 0 ? [...x, y] : x, []).sort((a, b) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1)
-    return { videos: videos, menu: tags }
+    // let { data } = await axios.get(`http://localhost:3000/yola.json`)
+    // let videos = data.data.map((video) => video.clip)
+    // let tags = data.data.map((video) => video.clip.tags).reduce((a, b) => a.concat(b)).reduce((x, y) => x.findIndex(e => e.canonical === y.canonical) < 0 ? [...x, y] : x, []).sort((a, b) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1)
+    // return { videos: videos, menu: tags }
   }
 }
 </script>

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 
 export default {
   components: {
@@ -26,13 +26,24 @@ export default {
       window.history.go(-1)
     }
   },
-
-  async asyncData ({ params }) {
-    const fallback = {name: 'No Name', embed: {html: '<div>Not found</div>'}}
-    let { data } = await axios.get(`http://localhost:3000/yola.json`)
-    let apiVideo = data.data.map((video) => video.clip).filter(video => (video.uri.indexOf(params.video) !== -1))
-    let video = Object.assign({}, apiVideo[0], fallback)
-    return { video: video, test: params }
+  computed: {
+    video: (context) => {
+      const fallback = {name: 'No Name', embed: {html: '<div>Not found</div>'}}
+      let apiVideo = context.$store.getters.getVideoByID(context.$route.params.video)
+      return Object.assign({}, fallback, apiVideo[0])
+    }
+  },
+  // async asyncData ({ params }) {
+  //   const fallback = {name: 'No Name', embed: {html: '<div>Not found</div>'}}
+  //   let { data } = await axios.get(`http://localhost:3000/yola.json`)
+  //   let apiVideo = data.data.map((video) => video.clip).filter(video => (video.uri.indexOf(params.video) !== -1))
+  //   let video = Object.assign({}, fallback, apiVideo[0])
+  //   return { video: video, test: params }
+  // },
+  head () {
+    return {
+      title: this.video.name
+    }
   }
 }
 </script>
