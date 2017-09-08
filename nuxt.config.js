@@ -1,3 +1,4 @@
+const axios = require('axios')
 module.exports = {
   /*
   ** Headers of the page
@@ -16,7 +17,8 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#3B8070' },
+  // loading: { color: '#3B8070' },
+  loading: false,
   /*
   ** Build configuration
   */
@@ -35,20 +37,16 @@ module.exports = {
         })
       }
     }
+  },
+  css: ['~/assets/global.css'],
+  generate: {
+    routes: function () {
+      return axios.get('http://localhost:3000/yola.json')
+        .then((res) => {
+          return res.data.data.map((video) => {
+            return '/videos/' + video.uri
+          })
+        })
+    }
   }
 }
-
-// const axios = require('axios')
-//
-// module.exports = {
-//   generate: {
-//     routes: function () {
-//       return axios.get('https://my-api/users')
-//       .then((res) => {
-//         return res.data.map((user) => {
-//           return '/users/' + user.id
-//         })
-//       })
-//     }
-//   }
-// }
