@@ -2,9 +2,9 @@
   <section class="container">
     <div class="content">
       <h2 class="subtitle">
-        {{video[0].name}}
+        {{video.name}}
       </h2>
-      <div class="video" v-html="video[0].embed.html"></div>
+      <div class="video" v-html="video.embed.html"></div>
       <div class="back">
         <a v-on:click="goBack">
           Back
@@ -28,8 +28,10 @@ export default {
   },
 
   async asyncData ({ params }) {
+    const fallback = {name: 'No Name', embed: {html: '<div>Not found</div>'}}
     let { data } = await axios.get(`http://localhost:3000/yola.json`)
-    let video = data.data.map((video) => video.clip).filter(video => (video.uri.indexOf(params.video) !== -1))
+    let apiVideo = data.data.map((video) => video.clip).filter(video => (video.uri.indexOf(params.video) !== -1))
+    let video = Object.assign({}, apiVideo[0], fallback)
     return { video: video, test: params }
   }
 }

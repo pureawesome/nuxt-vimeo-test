@@ -44,7 +44,7 @@ module.exports = {
       return axios.get('http://localhost:3000/yola.json')
         .then((res) => {
           return res.data.data.map((video) => {
-            return '/videos/' + video.uri
+            return video.clip.uri
           })
         })
     }

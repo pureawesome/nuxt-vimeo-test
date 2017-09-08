@@ -15,7 +15,7 @@
         <ul>
           <li v-for="video in videos">
             <nuxt-link :to="video.uri">
-              <img :src="video.pictures.sizes[2].link" :alt="video.name" />
+              <img :src="video.pictures.sizes[2].link" :alt="video.name ? video.name : 'No Name'" />
             </nuxt-link>
           </li>
         </ul>
@@ -38,6 +38,14 @@ export default {
     if ((from && from.name === 'videos-video') || (to && to.name === 'videos-video')) return 'video'
   },
   async asyncData () {
+    // let test = axios.get('http://localhost:3000/yola.json')
+    //   .then((res) => {
+    //     return res.data.data.map((video) => {
+    //       return video.clip.uri
+    //     })
+    //   })
+    // console.log(test)
+
     let { data } = await axios.get(`http://localhost:3000/yola.json`)
     let videos = data.data.map((video) => video.clip)
     let tags = data.data.map((video) => video.clip.tags).reduce((a, b) => a.concat(b)).reduce((x, y) => x.findIndex(e => e.canonical === y.canonical) < 0 ? [...x, y] : x, []).sort((a, b) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1)
